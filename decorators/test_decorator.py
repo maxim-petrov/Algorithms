@@ -6,6 +6,7 @@ import io
 class TestDecorator:
     def __init__(self, func):
         self.func = func
+        self.__name__ = func.__name__
 
     def __call__(self, *args, **kwargs):
         test_cases = read_test_cases()
