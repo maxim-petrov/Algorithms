@@ -1,10 +1,14 @@
-from decorators import ExecutionTimeDecorator, TestDecorator
+from decorators import ExecutionTimeDecorator
+from decorators import TestDecorator
+from decorators import MemoryProfilerDecorator
 
 execution_time_decorator = ExecutionTimeDecorator
 test_decorator = TestDecorator
+memory_profiler_decorator = MemoryProfilerDecorator
 
 
-@execution_time_decorator
+@memory_profiler_decorator
+@execution_time_decorator(num_runs=100)
 @test_decorator
 def main():  # Average execution time over 100 runs: 0.003326 seconds.
     with open('input.txt', 'r') as file_in:
