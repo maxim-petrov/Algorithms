@@ -1,9 +1,13 @@
-from decorators import ExecutionTimeDecorator, TestDecorator
+from decorators import ExecutionTimeDecorator
+from decorators import TestDecorator
+from decorators import MemoryProfilerDecorator
 
 execution_time_decorator = ExecutionTimeDecorator
 test_decorator = TestDecorator
+memory_profiler_decorator = MemoryProfilerDecorator
 
 
+@memory_profiler_decorator
 @execution_time_decorator
 @test_decorator
 def main():  # Average execution time over 100 runs: 0.003326 seconds.
