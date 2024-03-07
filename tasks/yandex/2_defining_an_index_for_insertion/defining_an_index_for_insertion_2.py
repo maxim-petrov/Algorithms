@@ -11,8 +11,8 @@ memory_profiler_decorator = MemoryProfilerDecorator
 @memory_profiler_decorator
 @execution_time_decorator(num_runs=1)
 @test_decorator
-def main():
-    with open('input.txt', 'r') as file_in:
+def main(input_filename):
+    with open(input_filename, 'r') as file_in:
         numbers = tuple(
             int(number) for number in next(file_in).strip().split(' ')
         )
@@ -35,4 +35,5 @@ def main():
         print(index)
 
 if __name__ == '__main__':
-    main()
+    main(input_filename='input.txt')
+
