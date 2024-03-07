@@ -1,1 +1,18 @@
-/.venv/
+# Bytecode files
+__pycache__/
+*.pyc
+
+# Virtual environments
+env/
+venv/
+.venv/
+
+# Packaging artifacts
+dist/
+build/
+*.egg-info/
+
+# Editor settings
+.idea/
+.vscode/
+*.swp
