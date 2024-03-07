@@ -28,19 +28,12 @@ class TestDecorator:
 
 
 def run_test_case(input_data, expected_output, func, *args, **kwargs):
-    if os.path.exists('input.txt'):
-        os.rename('input.txt', 'input_backup.txt')
-
-    with open('input.txt', 'w') as file:
+    with open('input_temp.txt', 'w') as file:
         file.write(input_data)
 
     captured_output = io.StringIO()
     with redirect_stdout(captured_output):
-        func(input_filename='input.txt', *args, **kwargs)
-
-    os.remove('input.txt')
-    if os.path.exists('input_backup.txt'):
-        os.rename('input_backup.txt', 'input.txt')
+        func(input_filename='input_temp.txt', *args, **kwargs)
 
     output = captured_output.getvalue().strip()
     if output == expected_output:
