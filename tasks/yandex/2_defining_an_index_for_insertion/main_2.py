@@ -19,11 +19,15 @@ def main():
         target = int(next(file_in))
 
         while len(numbers) > 1:
-            number_length = len(numbers)
-            index = numbers[number_length // 2]
+            number_length = len(numbers) - 1
+            diff = number_length % 2
+            if diff:
+                index = number_length // 2
+            else:
+                index = number_length // 2
             if numbers[number_length // 2] > target:
                 numbers = numbers[:number_length // 2]
-                index += number_length // 2 - 2
+                index += number_length // 2
             else:
                 numbers = numbers[number_length // 2:]
                 index -= number_length // 2
