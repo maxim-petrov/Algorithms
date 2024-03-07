@@ -46,7 +46,7 @@ def run_test_case(input_data, expected_output, func):
     if output == expected_output:
         print(f"Test passed.")
     else:
-        print(f"Test failed.\nOutput: {output}\nExpected: {expected_output}")
+        print(f"Test failed.\nInput: {input_data}\nOutput: {output}\nExpected: {expected_output}")
         return False
     return True
 
