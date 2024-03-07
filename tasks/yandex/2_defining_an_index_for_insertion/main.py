@@ -8,7 +8,7 @@ memory_profiler_decorator = MemoryProfilerDecorator
 
 
 @memory_profiler_decorator
-@execution_time_decorator(num_runs=1000)
+@execution_time_decorator(num_runs=1)
 @test_decorator
 def main():
     with open('input.txt', 'r') as file_in:
