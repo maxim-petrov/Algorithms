@@ -27,7 +27,7 @@ class TestDecorator:
             os.remove('temp_output.txt')
 
 
-def run_test_case(input_data, expected_output, func):
+def run_test_case(input_data, expected_output, func, *args, **kwargs):
     if os.path.exists('input.txt'):
         os.rename('input.txt', 'input_backup.txt')
 
@@ -36,7 +36,7 @@ def run_test_case(input_data, expected_output, func):
 
     captured_output = io.StringIO()
     with redirect_stdout(captured_output):
-        func()
+        func(input_filename='input.txt', *args, **kwargs)
 
     os.remove('input.txt')
     if os.path.exists('input_backup.txt'):
