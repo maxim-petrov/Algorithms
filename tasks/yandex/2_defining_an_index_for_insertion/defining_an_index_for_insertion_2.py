@@ -1,7 +1,6 @@
 from decorators import ExecutionTimeDecorator
 from decorators import TestDecorator
 from decorators import MemoryProfilerDecorator
-import time
 
 execution_time_decorator = ExecutionTimeDecorator
 test_decorator = TestDecorator
@@ -18,22 +17,19 @@ def main(input_filename):
         )
         target = int(next(file_in))
 
-        while len(numbers) > 1:
-            number_length = len(numbers) - 1
-            diff = number_length % 2
-            if diff:
-                index = number_length // 2
-            else:
-                index = number_length // 2
-            if numbers[number_length // 2] > target:
-                numbers = numbers[:number_length // 2]
-                index += number_length // 2
-            else:
-                numbers = numbers[number_length // 2:]
-                index -= number_length // 2
+        left = 0
+        right = len(numbers)
 
-        print(index)
+        while left < right:
+            mid = (left + right) // 2
+
+            if numbers[mid] < target:
+                left = mid + 1
+            else:
+                right = mid
+
+        print(left)
+
 
 if __name__ == '__main__':
     main(input_filename='input.txt')
-
