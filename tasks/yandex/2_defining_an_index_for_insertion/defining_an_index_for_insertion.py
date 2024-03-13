@@ -17,14 +17,18 @@ def main(input_filename):
         )
         target = int(next(file_in))
 
-        indexed_numbers = enumerate(numbers)
-        for index, number in indexed_numbers:
-            if target <= number:
-                output = index
-                break
-            output = index + 1
+        left = 0
+        right = len(numbers)
 
-        print(output)
+        while left < right:
+            mid = (left + right) // 2
+
+            if numbers[mid] < target:
+                left = mid + 1
+            else:
+                right = mid
+
+        print(left)
 
 
 if __name__ == '__main__':
