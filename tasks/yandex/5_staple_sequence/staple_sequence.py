@@ -32,28 +32,19 @@ def main(input_filename):
             if left_index < left:
                 left_index = right_index - 1
                 left = right_index
-            if data_arr[right_index] == '}':
-                if data_arr[left_index] != '{':
-                    print(False)
-                    return
-                else:
+
+            left_bracket = data_arr[left_index]
+            right_bracket = data_arr[right_index]
+            matching_pairs = {('{', '}'), ('[', ']'), ('(', ')')}
+            if right_bracket in {pair[1] for pair in matching_pairs}:
+                if (left_bracket, right_bracket) in matching_pairs:
                     left_index -= 1
                     continue
-            if data_arr[right_index] == ']':
-                if data_arr[left_index] != '[':
+                else:
                     print(False)
                     return
-                else:
-                    left_index -= 1
-                    continue
-            if data_arr[right_index] == ')':
-                if data_arr[left_index] != '(':
-                    print(False)
-                    return
-                else:
-                    left_index -= 1
-                    continue
             left_index += 1
+
         if left_index < left or left_index == 0:
             print(True)
         else:
