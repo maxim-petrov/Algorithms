@@ -25,7 +25,7 @@ def main(input_filename):
         if data_arr_length % 2:
             print(False)
             return
-
+    # ({})({[]}[])
         left = 0
         left_index = 0
         for right_index in range(1, data_arr_length):
@@ -37,7 +37,7 @@ def main(input_filename):
             right_bracket = data_arr[right_index]
             matching_pairs = {('{', '}'), ('[', ']'), ('(', ')')}
             if right_bracket in {pair[1] for pair in matching_pairs}:
-                if (left_bracket, right_bracket) in matching_pairs:
+                if (left_bracket, right_bracket) in matching_pairs or (data_arr[right_index-1], right_bracket) in matching_pairs:
                     left_index -= 1
                     continue
                 else:
