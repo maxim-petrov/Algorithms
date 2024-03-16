@@ -15,15 +15,16 @@ def read_next_line(filename):
             return None
 
 
-# @memory_profiler_decorator
-# @execution_time_decorator(num_runs=1)
-# @test_decorator
+@memory_profiler_decorator
+@execution_time_decorator(num_runs=1)
+@test_decorator
 def main(input_filename):
     try:
         data_arr = tuple(read_next_line(input_filename).strip())
         data_arr_length = len(data_arr)
         if data_arr_length % 2:
-            return False
+            print(False)
+            return
 
         left = 0
         left_index = 0
@@ -53,8 +54,10 @@ def main(input_filename):
                     left_index -= 1
                     continue
             left_index += 1
-        print(True)
-
+        if left_index < left or left_index == 0:
+            print(True)
+        else:
+            print(False)
 
     except IOError:
         print("File not found or unable to read")
