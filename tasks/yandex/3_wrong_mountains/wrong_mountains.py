@@ -17,31 +17,34 @@ def main(input_filename):
         )
         numbers_length = len(numbers) - 1
 
-        if numbers_length < 2:
+        if numbers_length >= 2:
+            result = check_if_mountain_sequence(numbers, numbers_length)
+        else:
             result = False
-            print(result)
-            return
 
-        is_peak_reached = False
-        for number_index in range(0, numbers_length):
-            if numbers[number_index] == numbers[number_index + 1]:
-                result = False
-                print(result)
-                return
-            if not is_peak_reached:
-                if numbers[number_index] > numbers[number_index + 1]:
-                    if number_index == 0:
-                        result = False
-                        print(result)
-                        return
-                    is_peak_reached = True
-            else:
-                if numbers[number_index] < numbers[number_index + 1]:
-                    result = False
-                    print(result)
-                    return
-        result = True
         print(result)
+
+
+def check_if_mountain_sequence(numbers, numbers_length):
+    is_peak_reached = False
+    for number_index in range(0, numbers_length):
+        current_number = numbers[number_index]
+        next_number = numbers[number_index + 1]
+
+        if current_number == next_number:
+            return False
+        elif not is_peak_reached:
+            if current_number > next_number:
+                if number_index == 0:
+                    return False
+                is_peak_reached = True
+        else:
+            if current_number < next_number:
+                return False
+    if is_peak_reached:
+        return True
+    else:
+        return False
 
 
 if __name__ == '__main__':
