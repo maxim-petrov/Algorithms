@@ -18,7 +18,10 @@ class TestDecorator:
 
         for input_data, expected_output in test_cases:
             if not run_test_case(
-                    input_filename, input_data, expected_output, self.func
+                    input_filename=input_filename,
+                    input_data=input_data,
+                    expected_output=expected_output,
+                    func=self.func
             ):
                 print("Stopping due to failed test.")
                 all_tests_passed = False
@@ -34,9 +37,10 @@ class TestDecorator:
 
 
 def run_test_case(
-        input_filename, input_data, expected_output, func, *args, **kwargs
+        input_filename, expected_output, func, input_data, *args, **kwargs
 ):
     with open(f'{input_filename}_temp.txt', 'w') as file:
+        input_data = input_data or ' '
         file.write(input_data)
 
     captured_output = io.StringIO()
