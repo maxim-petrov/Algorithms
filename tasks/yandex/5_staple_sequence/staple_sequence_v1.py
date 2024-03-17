@@ -16,7 +16,7 @@ def read_next_line(filename):
 
 
 @memory_profiler_decorator
-@execution_time_decorator(num_runs=1)
+@execution_time_decorator(num_runs=10_000)
 @test_decorator
 def main(input_filename):
     try:
@@ -25,7 +25,7 @@ def main(input_filename):
         if data_arr_length % 2:
             print(False)
             return
-    # ({})({[]}[])
+
         left = 0
         left_index = 0
         for right_index in range(1, data_arr_length):
