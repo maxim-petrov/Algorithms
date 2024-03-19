@@ -1,3 +1,5 @@
+# 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144
+
 from decorators import ExecutionTimeDecorator
 from decorators import TestDecorator
 from decorators import MemoryProfilerDecorator
@@ -16,36 +18,34 @@ def read_data(filename: str, num_lines: int = 1):
                 lines.append(
                     next(file_in).strip()
                 )
+            if num_lines == 1:
+                return lines[0]
             return lines
         except StopIteration:
             return None
 
 
-@memory_profiler_decorator
-@execution_time_decorator(num_runs=1)
-@test_decorator
+def fibonacci_series(n, current_num=1):
+    if n == 1:
+        return 0
+    if n == 2:
+        return 1
+    if n == 3:
+        return 1
+    result_sum = fibonacci_series(n - 1) + current_num
+    return result_sum
+
+
+# @memory_profiler_decorator
+# @execution_time_decorator(num_runs=1)
+# @test_decorator
 def main(input_filename: str):
     """Calculate and print the number of platforms needed for robots based on
     their weights and a weight limit.
     """
     try:
-        data = read_data(input_filename, 2)
-        robots_weights = sorted([int(weight) for weight in data[0].split()])
-        weight_limit: int = int(data[1])
-
-        platform_count: int = 0
-        left: int = 0
-        right: int = len(robots_weights) - 1
-
-        while left <= right:
-            total_weight: int = robots_weights[left] + robots_weights[right]
-
-            if total_weight <= weight_limit:
-                left += 1
-            right -= 1
-            platform_count += 1
-
-        print(platform_count)
+        data = read_data(input_filename)
+        print(fibonacci_series(4))
     except IOError:
         print("File not found or unable to read")
 
