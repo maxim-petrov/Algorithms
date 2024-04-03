@@ -1,6 +1,7 @@
 from decorators import ExecutionTimeDecorator
 from decorators import TestDecorator
 from decorators import MemoryProfilerDecorator
+from typing import List, Optional
 
 execution_time_decorator = ExecutionTimeDecorator
 test_decorator = TestDecorator
@@ -29,8 +30,10 @@ def main(input_filename: str):
     their weights and a weight limit.
     """
     try:
-        data = read_data(input_filename, 2)
-        robots_weights = sorted([int(weight) for weight in data[0].split()])
+        data: List[str] = read_data(input_filename, 2)
+        robots_weights: List[int] = (
+            sorted([int(weight) for weight in data[0].split()])
+        )
         weight_limit: int = int(data[1])
 
         platform_count: int = 0

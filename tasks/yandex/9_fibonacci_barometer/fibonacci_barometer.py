@@ -25,27 +25,30 @@ def read_data(filename: str, num_lines: int = 1):
             return None
 
 
-def fibonacci_series(n, current_num=1):
-    if n == 1:
-        return 0
-    if n == 2:
-        return 1
-    if n == 3:
-        return 1
-    result_sum = fibonacci_series(n - 1) + current_num
-    return result_sum
+fibonacci_array = []
 
 
-# @memory_profiler_decorator
-# @execution_time_decorator(num_runs=1)
-# @test_decorator
+def fibonacci_series(target, number=0, next_number=1):
+    if number:
+        fibonacci_array.append(number)
+    if not target:
+        fibonacci_array.append(1)
+        return
+    if number < target:
+        prev_number_temp = number
+        number = next_number
+        next_number += prev_number_temp
+        fibonacci_series(target, number, next_number)
+
+
+@memory_profiler_decorator
+@execution_time_decorator(num_runs=1)
+@test_decorator
 def main(input_filename: str):
-    """Calculate and print the number of platforms needed for robots based on
-    their weights and a weight limit.
-    """
     try:
-        data = read_data(input_filename)
-        print(fibonacci_series(4))
+        data = int(read_data(input_filename))
+        fibonacci_series(data)
+        print(fibonacci_array[-1])
     except IOError:
         print("File not found or unable to read")
 

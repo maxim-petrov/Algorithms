@@ -1,6 +1,9 @@
 # 110053513
 
-def read_data(filename: str, num_lines: int = 1):
+from typing import List, Optional
+
+
+def read_data(filename: str, num_lines: int = 1) -> Optional[List[str]]:
     """Reads a specified number of lines from a file."""
     lines = []
     with open(filename, 'r') as file_in:
@@ -14,13 +17,15 @@ def read_data(filename: str, num_lines: int = 1):
             return None
 
 
-def main(input_filename: str):
+def main(input_filename: str) -> None:
     """Calculate and print the number of platforms needed for robots based on
     their weights and a weight limit.
     """
     try:
-        data = read_data(input_filename, 2)
-        robots_weights = sorted([int(weight) for weight in data[0].split()])
+        data: List[str] = read_data(input_filename, 2)
+        robots_weights: List[int] = (
+            sorted([int(weight) for weight in data[0].split()])
+        )
         weight_limit: int = int(data[1])
 
         platform_count: int = 0
