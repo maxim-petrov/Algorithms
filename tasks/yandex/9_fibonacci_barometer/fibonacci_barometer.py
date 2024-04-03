@@ -28,13 +28,10 @@ def read_data(filename: str, num_lines: int = 1):
 fibonacci_array = []
 
 
-def fibonacci_series(target, number=0, next_number=1):
+def fibonacci_series(target, number=1, next_number=1):
     if number:
         fibonacci_array.append(number)
-    if not target:
-        fibonacci_array.append(1)
-        return
-    if number < target:
+    if len(fibonacci_array) <= target:
         prev_number_temp = number
         number = next_number
         next_number += prev_number_temp
