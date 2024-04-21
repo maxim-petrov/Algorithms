@@ -1,17 +1,14 @@
-# 110053513
+# 112547312
 
 from typing import List, Optional
+from itertools import islice
 
 
 def read_data(filename: str, num_lines: int = 1) -> Optional[List[str]]:
     """Reads a specified number of lines from a file."""
-    lines = []
     with open(filename, 'r') as file_in:
         try:
-            for i in range(num_lines):
-                lines.append(
-                    next(file_in).strip()
-                )
+            lines = [line.strip() for line in islice(file_in, num_lines)]
             return lines
         except StopIteration:
             return None
@@ -22,11 +19,14 @@ def main(input_filename: str) -> None:
     their weights and a weight limit.
     """
     try:
-        data: List[str] = read_data(input_filename, 2)
-        robots_weights: List[int] = (
-            sorted([int(weight) for weight in data[0].split()])
+        robots_weights: str
+        weight_limit: str
+        robots_weights, weight_limit = read_data(input_filename, 2)
+
+        robots_weights: List[int] = sorted(
+            [int(weight) for weight in robots_weights.split()]
         )
-        weight_limit: int = int(data[1])
+        weight_limit: int = int(weight_limit)
 
         platform_count: int = 0
         left: int = 0
