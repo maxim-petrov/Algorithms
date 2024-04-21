@@ -1,4 +1,5 @@
 from itertools import islice
+from collections import deque
 
 from decorators import ExecutionTimeDecorator
 from decorators import TestDecorator
@@ -20,18 +21,11 @@ def read_data(filename: str, num_lines: int = 2):
 
 
 def counting_game(n, k):
-    counter = 1
-    numbers = list(range(1, n + 1))
-    while len(numbers) > 1:
-        for number in numbers[:]:
-            if len(numbers) > 1:
-                if counter >= k:
-                    numbers.remove(number)
-                    counter = 1
-                else:
-                    counter += 1
-    print(numbers[0])
-
+    queue = deque(range(1, n + 1))
+    while len(queue) > 1:
+        queue.rotate(-(k-1))
+        queue.popleft()
+    print(queue[0])
 
 @memory_profiler_decorator
 @execution_time_decorator(num_runs=1)
