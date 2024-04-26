@@ -1,11 +1,12 @@
-# 10
-# 2 4 3 5 6 0 9 8 7 7
-# 6
-# 2 4 3 5 6 0
-
-# 2 4 3 5 6 0 7 7 8 9
-
 from itertools import islice
+
+from decorators import ExecutionTimeDecorator
+from decorators import TestDecorator
+from decorators import MemoryProfilerDecorator
+
+execution_time_decorator = ExecutionTimeDecorator
+test_decorator = TestDecorator
+memory_profiler_decorator = MemoryProfilerDecorator
 
 
 def read_data(filename: str, num_lines: int = 2):
@@ -28,16 +29,26 @@ def process_data(data):
 
 
 def sort_by_pattern(num_count, nums_to_sort, tmpl_array_length, tmpl_array):
-    arr = nums_to_sort[:]
+    arr = []
+    nums_to_sort_copy = nums_to_sort[:]
+
     for i in range(0, num_count):
-        for y in range(i, num_count):
-            if y < tmpl_array_length:
-                if tmpl_array[i] == nums_to_sort[y]:
-                    print(arr[i])
-                    print(tmpl_array[i])
-    print(arr)
+        counter = 0
+        if tmpl_array_length > i:
+            while counter < num_count:
+                if tmpl_array[i] == nums_to_sort[counter]:
+                    arr.append(nums_to_sort[counter])
+                    nums_to_sort_copy.remove(nums_to_sort[counter])
+                counter += 1
+
+    array = arr + sorted(nums_to_sort_copy)
+    string = ' '.join(map(str, array))
+    print(string)
 
 
+@memory_profiler_decorator
+@execution_time_decorator(num_runs=1)
+@test_decorator
 def main(input_filename: str):
     data = read_data(input_filename, 4)
     num_count, nums_to_sort, tmpl_array_length, tmpl_array = process_data(data)
