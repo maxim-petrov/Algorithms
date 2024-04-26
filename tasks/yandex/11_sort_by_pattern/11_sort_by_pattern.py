@@ -1,12 +1,11 @@
+# 10
+# 2 4 3 5 6 0 9 8 7 7
+# 6
+# 2 4 3 5 6 0
+
+# 2 4 3 5 6 0 7 7 8 9
+
 from itertools import islice
-
-from decorators import ExecutionTimeDecorator
-from decorators import TestDecorator
-from decorators import MemoryProfilerDecorator
-
-execution_time_decorator = ExecutionTimeDecorator
-test_decorator = TestDecorator
-memory_profiler_decorator = MemoryProfilerDecorator
 
 
 def read_data(filename: str, num_lines: int = 2):
@@ -19,29 +18,30 @@ def read_data(filename: str, num_lines: int = 2):
             return None
 
 
-def counting_game(n, k):
-    counter = 1
-    numbers = list(range(1, n + 1))
-    while len(numbers) > 1:
-        for number in numbers[:]:
-            if len(numbers) > 1:
-                if counter >= k:
-                    numbers.remove(number)
-                    counter = 1
-                else:
-                    counter += 1
-    print(numbers[0])
+def process_data(data):
+    return (
+        int(data[0]),
+        [int(num) for num in data[1].split()],
+        int(data[2]),
+        [int(num) for num in data[3].split()]
+    )
 
 
-@memory_profiler_decorator
-@execution_time_decorator(num_runs=1)
-@test_decorator
+def sort_by_pattern(num_count, nums_to_sort, tmpl_array_length, tmpl_array):
+    arr = nums_to_sort[:]
+    for i in range(0, num_count):
+        for y in range(i, num_count):
+            if y < tmpl_array_length:
+                if tmpl_array[i] == nums_to_sort[y]:
+                    print(arr[i])
+                    print(tmpl_array[i])
+    print(arr)
+
+
 def main(input_filename: str):
-    try:
-        n, k = map(int, read_data(input_filename, 2))
-        counting_game(n, k)
-    except IOError:
-        print("File not found or unable to read")
+    data = read_data(input_filename, 4)
+    num_count, nums_to_sort, tmpl_array_length, tmpl_array = process_data(data)
+    sort_by_pattern(num_count, nums_to_sort, tmpl_array_length, tmpl_array)
 
 
 if __name__ == '__main__':
