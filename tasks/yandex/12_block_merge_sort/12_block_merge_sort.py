@@ -32,6 +32,7 @@ def block_merge_sort(num_count, nums_to_sort):
                 maximum = nums_to_sort[i] - subtractor
         else:
             result += 1
+            maximum += subtractor
             subtractor = maximum + 1
             maximum = 0
             count = []
