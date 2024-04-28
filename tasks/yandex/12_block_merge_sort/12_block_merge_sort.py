@@ -1,6 +1,12 @@
-# 3 2 0 1 4 6 5
-
 from itertools import islice
+
+from decorators import ExecutionTimeDecorator
+from decorators import TestDecorator
+from decorators import MemoryProfilerDecorator
+
+execution_time_decorator = ExecutionTimeDecorator
+test_decorator = TestDecorator
+memory_profiler_decorator = MemoryProfilerDecorator
 
 
 def read_data(filename: str, num_lines: int = 2):
@@ -26,24 +32,22 @@ def block_merge_sort(num_count, nums_to_sort):
     maximum = 0
     count = []
     for i in range(0, num_count):
-        if len(count) - 1 < maximum:
-            count.append(nums_to_sort[i])
-            if nums_to_sort[i] - subtractor > maximum:
-                maximum = nums_to_sort[i] - subtractor
-        else:
+        if len(count) - 1 >= maximum:
             result += 1
             maximum += subtractor
             subtractor = maximum + 1
             maximum = 0
             count = []
-            if len(count) - 1 < maximum:
-                count.append(nums_to_sort[i])
-                if nums_to_sort[i] - subtractor > maximum:
-                    maximum = nums_to_sort[i] - subtractor
+        count.append(nums_to_sort[i])
+        if nums_to_sort[i] - subtractor > maximum:
+            maximum = nums_to_sort[i] - subtractor
     result += 1
     print(result)
 
 
+@memory_profiler_decorator
+@execution_time_decorator(num_runs=1)
+@test_decorator
 def main(input_filename: str):
     data = read_data(input_filename, 2)
     num_count, nums_to_sort = process_data(data)
