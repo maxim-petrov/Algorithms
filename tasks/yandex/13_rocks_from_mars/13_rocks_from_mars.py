@@ -1,9 +1,12 @@
-# 10
-# 8 5 5 8 6 9 8 2 4 7
-# 8
-# 9 8 1 1 1 5 10 8
-
 from itertools import islice
+
+from decorators import ExecutionTimeDecorator
+from decorators import TestDecorator
+from decorators import MemoryProfilerDecorator
+
+execution_time_decorator = ExecutionTimeDecorator
+test_decorator = TestDecorator
+memory_profiler_decorator = MemoryProfilerDecorator
 
 
 def read_data(filename: str, num_lines: int = 2):
@@ -27,23 +30,28 @@ def process_data(data):
 
 def distribute_samples(order_count, min_weights, sample_count, sample_weights):
     counter = 0
-    arr_temp = []
-    for i in range(0, sample_count):
-        for y in range(0, order_count):
-            if sample_weights[i] == min_weights[y]:
+    temp_arr = []
+    for i in range(0, order_count):
+        for y in range(0, sample_count):
+            if min_weights[i] == sample_weights[y]:
+                temp_arr.append(sample_weights[y])
+                sample_weights[y] = 0
+                min_weights[i] = 10000
                 counter += 1
                 break
-            else:
-                diff = sample_weights[i] - min_weights[y]
-                if diff > 0:
-                    arr_temp.append(min_weights[y])
-        print(sample_weights[i])
-        print(arr_temp)
-        arr_temp = []
-
+    for i in range(0, order_count):
+        for y in range(0, sample_count):
+            if min_weights[i] < sample_weights[y]:
+                sample_weights[y] = 0
+                min_weights[i] = 10000
+                counter += 1
+                break
     print(counter)
 
 
+@memory_profiler_decorator
+@execution_time_decorator(num_runs=1)
+@test_decorator
 def main(input_filename: str):
     data = read_data(input_filename, 4)
     order_count, min_weights, sample_count, sample_weights = process_data(data)
