@@ -29,20 +29,20 @@ def process_data(data):
 
 
 def distribute_samples(order_count, min_weights, sample_count, sample_weights):
-    counter = 0
-
     min_weights.sort()
     sample_weights.sort()
 
-    y = 0
-    for i in range(0, sample_count):
-        try:
-            if sample_weights[i] >= min_weights[y]:
-                y += 1
-                counter += 1
-        except:
-            break
-    print(counter)
+    match_count = 0
+    sample_index = 0
+
+    for sample_weight in sample_weights:
+        if sample_weight >= min_weights[sample_index]:
+            match_count += 1
+            sample_index += 1
+            if match_count == order_count:
+                break
+
+    print(match_count)
 
 
 @memory_profiler_decorator
