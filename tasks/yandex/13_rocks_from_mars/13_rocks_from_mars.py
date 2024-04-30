@@ -30,22 +30,16 @@ def process_data(data):
 
 def distribute_samples(order_count, min_weights, sample_count, sample_weights):
     counter = 0
-    temp_arr = []
-    for i in range(0, order_count):
-        for y in range(0, sample_count):
-            if min_weights[i] == sample_weights[y]:
-                temp_arr.append(sample_weights[y])
-                sample_weights[y] = 0
-                min_weights[i] = 10000
+
+    min_weights.sort()
+    sample_weights.sort()
+
+    for i in range(0, sample_count):
+        for y in range(0, order_count):
+            if sample_weights[i] >= min_weights[y]:
+                sample_weights[i] = 0
+                min_weights[y] = 10000
                 counter += 1
-                break
-    for i in range(0, order_count):
-        for y in range(0, sample_count):
-            if min_weights[i] < sample_weights[y]:
-                sample_weights[y] = 0
-                min_weights[i] = 10000
-                counter += 1
-                break
     print(counter)
 
 
