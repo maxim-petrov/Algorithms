@@ -34,12 +34,14 @@ def distribute_samples(order_count, min_weights, sample_count, sample_weights):
     min_weights.sort()
     sample_weights.sort()
 
+    y = 0
     for i in range(0, sample_count):
-        for y in range(0, order_count):
+        try:
             if sample_weights[i] >= min_weights[y]:
-                sample_weights[i] = 0
-                min_weights[y] = 10000
+                y += 1
                 counter += 1
+        except:
+            break
     print(counter)
 
 
