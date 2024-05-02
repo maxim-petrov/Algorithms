@@ -1,4 +1,4 @@
-data = '2[a]3[b]2[c]'
+data = '2[2[c]]2[a]'
 
 arr = [
     {
@@ -26,40 +26,28 @@ arr = [
 
 
 def compile_arr(data):
-    arr = []
+    multiplier = 1
+    start = data.find('[')
 
-    string = ''
-    multiplier = ''
+    if start != -1 and start > 0:
+        multiplier = int(data[:start])
 
-    left, right = 0, 0
-    for idx, char in enumerate(data):
-        if char.isdigit() and left == 0:
-            multiplier += char
-            continue
-        else:
-            string += char
+    positions = []
 
-        if char == '[':
-            left += 1
+    num = 0
+    for i, char in enumerate(data):
+        if char in '[':
+            positions.append((char, num))
+            num += 1
+        if char in ']':
+            num -= 1
+            positions.append((char, num))
 
-            if multiplier and left == 1:
-                multiplier = int(multiplier)
-            elif not multiplier and left == 1:
-                multiplier = 1
-        if char == ']':
-            right += 1
+    print(positions)
 
-            if left == 1 and right == 1:
-                arr.append({
-                    'multiplier': multiplier,
-                    'inner_value': string.strip('[]')
-                })
-                left = 0
-                right = 0
-                string = ''
-                multiplier = ''
 
-    return arr
+
+
 
 def process_data(arr):
     result = ''
@@ -73,4 +61,4 @@ def process_data(arr):
 
 arr_2 = compile_arr(data)
 print(arr_2)
-print(process_data(arr_2))
+
