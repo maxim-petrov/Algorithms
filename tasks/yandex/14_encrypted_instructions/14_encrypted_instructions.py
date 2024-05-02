@@ -17,34 +17,28 @@ def process_data(data):
 
 def decode_instruction(instruction):
     arr = []
-    arr_temp = ''
-
-    multiplier = 1
-    multiplier_temp = ''
-
+    string = ''
     left, right = 0, 0
-    for idx, char in enumerate(instruction):
-        if char.isalpha():
-            arr_temp += char
-        if char.isdigit():
-            multiplier_temp += char
+    for char in instruction:
         if char == '[':
-            arr += arr_temp * multiplier
-            arr_temp = ''
-            if multiplier_temp and left == right:
-                multiplier = int(multiplier_temp)
-                multiplier_temp = ''
             left += 1
+            if left - right != 1:
+                string += char
+            continue
         if char == ']':
             right += 1
-            if left == right:
-                arr += arr_temp * multiplier
-                arr_temp = ''
-                multiplier = 1
-    arr += arr_temp * multiplier
-
-    print(instruction)
+            if left - right:
+                string += char
+            continue
+        if left != right:
+            string += char
+            continue
+        if left == right:
+            arr.append(string)
     print(arr)
+    print(string)
+
+
 
 def main(input_filename: str):
     data = read_data(input_filename, 1)
