@@ -1,4 +1,4 @@
-data = '2[2[c2[b]]]2[a]'
+data = 'a2[b2[c]]a'
 
 arr = [
     {
@@ -26,28 +26,41 @@ arr = [
 
 
 def compile_arr(data):
-    multiplier = 1
-    start = data.find('[')
-
-    if start != -1 and start > 0:
-        multiplier = int(data[:start])
-
     positions = []
     positions_temp = []
     num = 0
+    is_start = True
     for i, char in enumerate(data):
+        if char.isalpha() and is_start:
+            positions_temp.append(i)
+            if i == len(data) - 1:
+                positions.append(positions_temp)
+                positions_temp = []
+            continue
+        if char.isdigit():
+            if is_start and positions_temp:
+                positions.append(positions_temp)
+                positions_temp = []
         if char in '[':
+            is_start = False
             if num == 0:
-                positions_temp.append(i)
+                positions_temp.append(i + 1)
             num += 1
+            continue
         if char in ']':
+            is_start = False
             num -= 1
             if num == 0:
                 positions_temp.append(i)
                 positions.append(positions_temp)
                 positions_temp = []
+                is_start = True
+            continue
     for position in positions:
-        string = data[position[0] + 1:position[1]]
+        if len(position) == 1:
+            string = data[position[0]]
+        else:
+            string = data[position[0]:position[1]]
         print(string)
 
     print(positions)
