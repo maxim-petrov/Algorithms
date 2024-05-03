@@ -1,5 +1,6 @@
 data = '2[abc]3[cd]ef'
 
+
 def compile_arr(data):
     multiplier = ''
     multipliers = []
@@ -52,8 +53,11 @@ def compile_arr(data):
                 'inner_value': string
             })
         else:
-            string = data[position[0]:position[1]]
-            print(string)
+            if len(data) - 1 == position[1]:
+                string = data[position[0]:]
+            else:
+                string = data[position[0]:position[1]]
+            print(f'string: {string}')
             if string.find('[') != -1:
                 final.append({
                     'multiplier': multipliers[i],
