@@ -1,6 +1,19 @@
+from itertools import islice
+
 # data = '2[abc]3[cd]ef'
 # data = '3[a]2[bc]'
 data = '3[a2[c]]'
+
+
+def read_data(filename: str, num_lines: int = 2):
+    """Reads a specified number of lines from a file."""
+    with open(filename, 'r') as file_in:
+        try:
+            lines = [line.strip() for line in islice(file_in, num_lines)]
+            return lines
+        except StopIteration:
+            return None
+
 
 def compile_arr(data):
     multiplier = ''
@@ -54,17 +67,11 @@ def compile_arr(data):
                 'inner_value': string
             })
         else:
-            print('---')
-            print(position[0])
-            print(position[1])
-            print(len(data) - 1)
-            print('---')
             if len(data) - 1 == position[1] and position[0] + 1 == position[1]:
                 string = data[position[0]:]
                 string = string.strip('[]')
             else:
                 string = data[position[0]:position[1]]
-            print(f'string: {string}')
             if string.find('[') != -1:
                 final.append({
                     'multiplier': multipliers[i],
@@ -88,6 +95,12 @@ def process_data(arr):
     return result
 
 
-arr = compile_arr(data)
-print(process_data(arr))
 
+def main(input_filename: str):
+    # data = read_data(input_filename, 1)
+    arr = compile_arr(data)
+    print(process_data(arr))
+
+
+if __name__ == '__main__':
+    main(input_filename='input.txt')
