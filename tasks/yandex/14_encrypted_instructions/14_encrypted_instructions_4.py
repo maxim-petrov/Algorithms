@@ -1,5 +1,6 @@
-data = '2[abc]3[cd]ef'
-
+# data = '2[abc]3[cd]ef'
+# data = '3[a]2[bc]'
+data = '3[a2[c]]'
 
 def compile_arr(data):
     multiplier = ''
@@ -53,8 +54,14 @@ def compile_arr(data):
                 'inner_value': string
             })
         else:
-            if len(data) - 1 == position[1]:
+            print('---')
+            print(position[0])
+            print(position[1])
+            print(len(data) - 1)
+            print('---')
+            if len(data) - 1 == position[1] and position[0] + 1 == position[1]:
                 string = data[position[0]:]
+                string = string.strip('[]')
             else:
                 string = data[position[0]:position[1]]
             print(f'string: {string}')
