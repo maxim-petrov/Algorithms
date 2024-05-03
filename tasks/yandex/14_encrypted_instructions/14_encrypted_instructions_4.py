@@ -1,4 +1,4 @@
-data = 'a2[b2[c]]a'
+data = 'a2[b2[d]]c'
 
 arr = [
     {
@@ -26,6 +26,8 @@ arr = [
 
 
 def compile_arr(data):
+    final = []
+
     positions = []
     positions_temp = []
     num = 0
@@ -59,12 +61,23 @@ def compile_arr(data):
     for position in positions:
         if len(position) == 1:
             string = data[position[0]]
+            final.append({
+                'multiplier': 1,
+                'inner_value': string
+            })
         else:
             string = data[position[0]:position[1]]
-        print(string)
-
-    print(positions)
-
+            if string.find('['):
+                final.append({
+                    'multiplier': 1,
+                    'inner_value': compile_arr(string)
+                })
+            else:
+                final.append({
+                    'multiplier': 1,
+                    'inner_value': string
+                })
+    return final
 
 def process_data(arr):
     result = ''
