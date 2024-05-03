@@ -1,32 +1,8 @@
-data = 'a2[b3[d]]c'
-
-arr = [
-    {
-        'multiplier': 1,
-        'inner_value': 'a'
-    },
-    {
-        'multiplier': 3,
-        'inner_value': 'ac'
-    },
-    {
-        'multiplier': 2,
-        'inner_value': [
-            {
-                'multiplier': 1,
-                'inner_value': 'bc'
-            },
-            {
-                'multiplier': 2,
-                'inner_value': 'a'
-            }
-        ]
-    }
-]
-
+data = '3[a]2[bc]'
 
 def compile_arr(data):
     multiplier = ''
+    multipliers = []
 
     final = []
 
@@ -42,15 +18,17 @@ def compile_arr(data):
                 positions_temp = []
             continue
         if char.isdigit():
-            if is_start and positions_temp:
+            if is_start:
                 multiplier += char
+            if is_start and positions_temp:
                 positions.append(positions_temp)
                 positions_temp = []
         if char in '[':
             if not multiplier:
-                multiplier = 1
+                multipliers.append(1)
             else:
-                multiplier = int(multiplier)
+                multipliers.append(int(multiplier))
+            multiplier = ''
             is_start = False
             if num == 0:
                 positions_temp.append(i + 1)
@@ -65,33 +43,30 @@ def compile_arr(data):
                 positions_temp = []
                 is_start = True
             continue
-    for position in positions:
-        if not multiplier:
-            multiplier = 1
-        else:
-            multiplier = int(multiplier)
+    for i, position in enumerate(positions):
+        if not multipliers:
+            multipliers.append(1)
         if len(position) == 1:
             string = data[position[0]]
             final.append({
-                'multiplier': multiplier,
+                'multiplier': multipliers[i],
                 'inner_value': string
             })
         else:
             string = data[position[0]:position[1]]
-            if string.find('['):
+            print(string)
+            if string.find('[') != -1:
                 final.append({
-                    'multiplier': multiplier,
+                    'multiplier': multipliers[i],
                     'inner_value': compile_arr(string)
                 })
-                multiplier = ''
             else:
                 final.append({
-                    'multiplier': multiplier,
+                    'multiplier': multipliers[i],
                     'inner_value': string
                 })
-                multiplier = ''
-        print(string)
     return final
+
 
 def process_data(arr):
     result = ''
@@ -103,6 +78,6 @@ def process_data(arr):
     return result
 
 
-arr_2 = compile_arr(data)
-print(process_data(arr_2))
+arr = compile_arr(data)
+print(process_data(arr))
 
