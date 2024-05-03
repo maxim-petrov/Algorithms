@@ -1,4 +1,4 @@
-data = '2[2[c]]2[a]'
+data = '2[2[c2[b]]]2[a]'
 
 arr = [
     {
@@ -33,20 +33,24 @@ def compile_arr(data):
         multiplier = int(data[:start])
 
     positions = []
-
+    positions_temp = []
     num = 0
     for i, char in enumerate(data):
         if char in '[':
-            positions.append((char, num))
+            if num == 0:
+                positions_temp.append(i)
             num += 1
         if char in ']':
             num -= 1
-            positions.append((char, num))
+            if num == 0:
+                positions_temp.append(i)
+                positions.append(positions_temp)
+                positions_temp = []
+    for position in positions:
+        string = data[position[0] + 1:position[1]]
+        print(string)
 
     print(positions)
-
-
-
 
 
 def process_data(arr):
