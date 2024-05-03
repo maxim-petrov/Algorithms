@@ -1,4 +1,4 @@
-data = '3[a]2[bc]'
+data = '2[abc]3[cd]ef'
 
 def compile_arr(data):
     multiplier = ''
@@ -44,8 +44,7 @@ def compile_arr(data):
                 is_start = True
             continue
     for i, position in enumerate(positions):
-        if not multipliers:
-            multipliers.append(1)
+        multipliers.append(1)
         if len(position) == 1:
             string = data[position[0]]
             final.append({
