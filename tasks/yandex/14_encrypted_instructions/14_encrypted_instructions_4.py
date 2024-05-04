@@ -1,8 +1,9 @@
 from itertools import islice
 
-data = '2[abc]3[cd]ef'
+# data = '2[abc]3[cd]ef'
 # data = '3[a]2[bc]'
 # data = '3[a2[c]]'
+# data = '3[2[c]]'
 
 
 def read_data(filename: str, num_lines: int = 2):
@@ -17,7 +18,6 @@ def read_data(filename: str, num_lines: int = 2):
 
 def compile_arr(data):
     result = ''
-    instructions = []
 
     string = ''
     multiplier = 1
@@ -38,8 +38,10 @@ def compile_arr(data):
             if string[0] == '[' and string[-1] == ']':
                 string = string[1:-1]
 
-            # if string.find('[') or string.find(']'):
-            result += string * multiplier
+            if string.find('[') != -1 or string.find(']') != -1:
+                result += compile_arr(string) * multiplier
+            else:
+                result += string * multiplier
             string = ''
             multiplier = 1
 
