@@ -1,9 +1,12 @@
+import re
 from itertools import islice
 
 # data = '2[abc]3[cd]ef'
 # data = '3[a]2[bc]'
 # data = '3[a2[c]]'
 # data = '3[2[c]]'
+# data = '300[a]'
+# data = '2[a2[a2[a]]]2[b]'
 
 
 def read_data(filename: str, num_lines: int = 1):
@@ -20,12 +23,15 @@ def compile_arr(data):
     result = ''
 
     string = ''
+
     multiplier = 1
 
     position = 0
     for idx, char in enumerate(data):
         if char.isdigit() and not position:
-            multiplier = int(char)
+            match = re.match(r'\d+', data[idx:])
+            if match and multiplier == 1:
+                multiplier = int(match.group(0))
             continue
         elif char == ']':
             position -= 1
@@ -46,18 +52,6 @@ def compile_arr(data):
             multiplier = 1
 
     return result
-
-
-
-def process_data(arr):
-    result = ''
-    for item in arr:
-        if type(item['inner_value']) is list:
-            result += item['multiplier'] * process_data(item['inner_value'])
-        else:
-            result += item['multiplier'] * item['inner_value']
-    return result
-
 
 
 def main(input_filename: str):
