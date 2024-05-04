@@ -6,7 +6,7 @@ from itertools import islice
 # data = '3[2[c]]'
 
 
-def read_data(filename: str, num_lines: int = 2):
+def read_data(filename: str, num_lines: int = 1):
     """Reads a specified number of lines from a file."""
     with open(filename, 'r') as file_in:
         try:
@@ -61,10 +61,9 @@ def process_data(arr):
 
 
 def main(input_filename: str):
-    # data = read_data(input_filename, 1)
+    data = read_data(input_filename)
     arr = compile_arr(data)
     print(arr)
-    # print(process_data(arr))
 
 
 if __name__ == '__main__':
