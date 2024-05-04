@@ -1,46 +1,71 @@
 import re
-from typing import Optional, Match
+from typing import Optional, Tuple, Match
 
 
-def read_data(filename: str):
+def read_data(filename: str) -> str:
     """Read and return first line from a specified file."""
     with open(filename, 'r') as file_in:
-        line: str = file_in.readline().strip()
-        return line
+        return file_in.readline().strip()
 
 
-def process_data(data: str):
+def handle_brackets(char, position) -> int:
+    """Adjust bracket nesting level based on the character provided."""
+    if char == ']':
+        position -= 1
+    elif char == '[':
+        position += 1
+    return position
+
+
+def process_string(multiplier, result, string) -> str:
+    """Append string to result, repeated according to multiplier, handling
+    nested patterns recursively.
+    """
+    if string.find('[') != -1 or string.find(']') != -1:
+        result += process_data(string) * multiplier
+    else:
+        result += string * multiplier
+    return result
+
+
+def extract_multiplier(data: str, index: int) -> Tuple[int, int]:
+    """Extract a numerical multiplier from the data string starting at the
+    specified index.
+    """
+    match: Optional[Match[str]] = re.match(r'\d+', data[index:])
+    if match:
+        length = len(match.group(0))
+        multiplier = int(match.group(0)), index + length
+        return multiplier
+    return 1, index
+
+
+def process_data(data: str) -> str:
     """Process the given string data, expanding nested patterns according to
     specified multipliers.
     """
     result: str = ''
     string: str = ''
     multiplier: int = 1
-
     position: int = 0
-    for idx, char in enumerate(data):
-        if char.isdigit() and not position:
-            match: Optional[Match[str]] = re.match(r'\d+', data[idx:])
-            if match and multiplier == 1:
-                multiplier = int(match.group(0))
-            continue
-        elif char == ']':
-            position -= 1
-        elif char == '[':
-            position += 1
 
+    index = 0
+    while index < len(data):
+        char = data[index]
+        if char.isdigit() and not position:
+            multiplier, index = extract_multiplier(data, index)
+            continue
+        position = handle_brackets(char, position)
         string += char
 
         if string and not position:
             if string[0] == '[' and string[-1] == ']':
                 string = string[1:-1]
 
-            if string.find('[') != -1 or string.find(']') != -1:
-                result += process_data(string) * multiplier
-            else:
-                result += string * multiplier
+            result = process_string(multiplier, result, string)
             string = ''
             multiplier = 1
+        index += 1
 
     return result
 
