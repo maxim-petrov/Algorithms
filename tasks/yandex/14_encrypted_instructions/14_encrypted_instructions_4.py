@@ -1,8 +1,8 @@
 from itertools import islice
 
-# data = '2[abc]3[cd]ef'
+data = '2[abc]3[cd]ef'
 # data = '3[a]2[bc]'
-data = '3[a2[c]]'
+# data = '3[a2[c]]'
 
 
 def read_data(filename: str, num_lines: int = 2):
@@ -16,73 +16,35 @@ def read_data(filename: str, num_lines: int = 2):
 
 
 def compile_arr(data):
-    multiplier = ''
-    multipliers = []
+    result = ''
+    instructions = []
 
-    final = []
+    string = ''
+    multiplier = 1
 
-    positions = []
-    positions_temp = []
-    num = 0
-    is_start = True
-    for i, char in enumerate(data):
-        if char.isalpha() and is_start:
-            positions_temp.append(i)
-            if i == len(data) - 1:
-                positions.append(positions_temp)
-                positions_temp = []
+    position = 0
+    for idx, char in enumerate(data):
+        if char.isdigit() and not position:
+            multiplier = int(char)
             continue
-        if char.isdigit():
-            if is_start:
-                multiplier += char
-            if is_start and positions_temp:
-                positions.append(positions_temp)
-                positions_temp = []
-        if char in '[':
-            if not multiplier:
-                multipliers.append(1)
-            else:
-                multipliers.append(int(multiplier))
-            multiplier = ''
-            is_start = False
-            if num == 0:
-                positions_temp.append(i + 1)
-            num += 1
-            continue
-        if char in ']':
-            is_start = False
-            num -= 1
-            if num == 0:
-                positions_temp.append(i)
-                positions.append(positions_temp)
-                positions_temp = []
-                is_start = True
-            continue
-    for i, position in enumerate(positions):
-        multipliers.append(1)
-        if len(position) == 1:
-            string = data[position[0]]
-            final.append({
-                'multiplier': multipliers[i],
-                'inner_value': string
-            })
-        else:
-            if len(data) - 1 == position[1] and position[0] + 1 == position[1]:
-                string = data[position[0]:]
-                string = string.strip('[]')
-            else:
-                string = data[position[0]:position[1]]
-            if string.find('[') != -1:
-                final.append({
-                    'multiplier': multipliers[i],
-                    'inner_value': compile_arr(string)
-                })
-            else:
-                final.append({
-                    'multiplier': multipliers[i],
-                    'inner_value': string
-                })
-    return final
+        elif char == ']':
+            position -= 1
+        elif char == '[':
+            position += 1
+
+        string += char
+
+        if string and not position:
+            if string[0] == '[' and string[-1] == ']':
+                string = string[1:-1]
+
+            # if string.find('[') or string.find(']'):
+            result += string * multiplier
+            string = ''
+            multiplier = 1
+
+    return result
+
 
 
 def process_data(arr):
@@ -99,7 +61,8 @@ def process_data(arr):
 def main(input_filename: str):
     # data = read_data(input_filename, 1)
     arr = compile_arr(data)
-    print(process_data(arr))
+    print(arr)
+    # print(process_data(arr))
 
 
 if __name__ == '__main__':
