@@ -1,3 +1,5 @@
+# 113503859
+
 import re
 from typing import Optional, Tuple, Match
 
@@ -8,7 +10,7 @@ def read_data(filename: str) -> str:
         return file_in.readline().strip()
 
 
-def handle_brackets(char, position) -> int:
+def handle_brackets(char: str, position: int) -> int:
     """Adjust bracket nesting level based on the character provided."""
     if char == ']':
         position -= 1
@@ -17,7 +19,7 @@ def handle_brackets(char, position) -> int:
     return position
 
 
-def process_string(multiplier, result, string) -> str:
+def process_string(multiplier: int, result: str, string: str) -> str:
     """Append string to result, repeated according to multiplier, handling
     nested patterns recursively.
     """
@@ -34,8 +36,8 @@ def extract_multiplier(data: str, index: int) -> Tuple[int, int]:
     """
     match: Optional[Match[str]] = re.match(r'\d+', data[index:])
     if match:
-        length = len(match.group(0))
-        multiplier = int(match.group(0)), index + length
+        length: int = len(match.group(0))
+        multiplier: [tuple, tuple] = int(match.group(0)), index + length
         return multiplier
     return 1, index
 
@@ -49,7 +51,7 @@ def process_data(data: str) -> str:
     multiplier: int = 1
     position: int = 0
 
-    index = 0
+    index: int = 0
     while index < len(data):
         char = data[index]
         if char.isdigit() and not position:
