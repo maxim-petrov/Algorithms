@@ -1,4 +1,4 @@
-# 113503859
+# 113534713
 
 import re
 from typing import Optional, Tuple, Match
@@ -36,10 +36,12 @@ def extract_multiplier(data: str, index: int) -> Tuple[int, int]:
     """
     match: Optional[Match[str]] = re.match(r'\d+', data[index:])
     if match:
-        length: int = len(match.group(0))
-        multiplier: [tuple, tuple] = int(match.group(0)), index + length
-        return multiplier
+        return int(match.group(0)), index + len(match.group(0))
     return 1, index
+
+
+def is_natural_number(char: str) -> bool:
+    return bool(re.match(r'^[1-9]\d*$', char))
 
 
 def process_data(data: str) -> str:
@@ -54,7 +56,7 @@ def process_data(data: str) -> str:
     index: int = 0
     while index < len(data):
         char = data[index]
-        if char.isdigit() and not position:
+        if is_natural_number(char) and not position:
             multiplier, index = extract_multiplier(data, index)
             continue
         position = handle_brackets(char, position)
